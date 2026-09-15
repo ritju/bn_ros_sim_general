@@ -129,8 +129,8 @@
         <camera>
           <horizontal_fov>1.047</horizontal_fov>
           <image>
-            <width>640</width>
-            <height>480</height>
+            <width>1280</width>
+            <height>1024</height>
             <format>R8G8B8</format>
           </image>
           <clip>
@@ -365,6 +365,27 @@
             <radius>0.149</radius>
           </sphere>
         </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <!-- 球轮不需要区分方向，两个摩擦系数都设为极低值 -->
+              <mu>0.01</mu>
+              <mu2>0.01</mu2>
+              <!-- 球体无需设置 fdir1，因为各向同性 -->
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <max_vel>0.5</max_vel>
+              <kp>1e6</kp>
+              <kd>1.0</kd>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
       </collision>
       <visual name='front_wheel_visual'>
         <pose>0 0 0 0 -0 0</pose>
@@ -419,8 +440,8 @@
           <friction>
             <ode>
               <mu>1.0</mu>
-              <mu2>1.0</mu2>
-              <fdir1>0 0 0</fdir1>
+              <mu2>100000</mu2>
+              <fdir1>1 0 0</fdir1>
               <slip1>0.0</slip1>
               <slip2>0.0</slip2>
             </ode>
@@ -430,8 +451,8 @@
               <soft_cfm>0</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+6</kp>
-              <kd>100</kd>
-              <max_vel>0.01</max_vel>
+              <kd>1</kd>
+              <max_vel>0.5</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
           </contact>
@@ -491,8 +512,8 @@
           <friction>
             <ode>
               <mu>1.0</mu>
-              <mu2>1.0</mu2>
-              <fdir1>0 0 0</fdir1>
+              <mu2>100000</mu2>
+              <fdir1>1 0 0</fdir1>
               <slip1>0.0</slip1>
               <slip2>0.0</slip2>
             </ode>
@@ -502,8 +523,8 @@
               <soft_cfm>0</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+6</kp>
-              <kd>100</kd>
-              <max_vel>0.01</max_vel>
+              <kd>1</kd>
+              <max_vel>0.5</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
           </contact>

@@ -1,17 +1,17 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version='1.7'>
   <model name='robot_gazebo_s1'>
-    <link name='base_board'>
+    <link name='base_footprint'>
       <inertial>
-        <pose>0.181583 1.8e-05 0.576403 0 -0 0</pose>
-        <mass>105.8</mass>
+        <pose>0.189606 5.6e-05 0.563428 0 -0 0</pose>
+        <mass>108.3</mass>
         <inertia>
-          <ixx>17.37</ixx>
-          <ixy>0.0661011</ixy>
-          <ixz>-0.555885</ixz>
-          <iyy>30.9783</iyy>
-          <iyz>0.000422627</iyz>
-          <izz>27.2617</izz>
+          <ixx>15.3947</ixx>
+          <ixy>0.0645352</ixy>
+          <ixz>0.217852</ixz>
+          <iyy>27.6071</iyy>
+          <iyz>0.00378152</iyz>
+          <izz>23.4222</izz>
         </inertia>
       </inertial>
       <collision name='base_footprint_collision'>
@@ -26,7 +26,7 @@
         <pose>0.190904 0 0.604698 0 -0 0</pose>
         <geometry>
           <box>
-            <size>1.329 0.683 0.92</size>
+            <size>1.3761 0.7947 0.918</size>
           </box>
         </geometry>
       </collision>
@@ -47,7 +47,7 @@
         </geometry>
       </visual>
       <visual name='base_footprint_fixed_joint_lump__back_camera_color_frame_visual_2'>
-        <pose>-0.586092 0 0.711711 0 -0 0</pose>
+        <pose>-0.586092 0 0.711711 0 -0 3.14159</pose>
         <geometry>
           <box>
             <size>0.02 0.02 0.02</size>
@@ -55,7 +55,7 @@
         </geometry>
       </visual>
       <visual name='base_footprint_fixed_joint_lump__back_camera_depth_frame_visual_3'>
-        <pose>-0.586092 0 0.812056 0 -0 0</pose>
+        <pose>-0.586092 0 0.812056 3.14159 -0 3.14159</pose>
         <geometry>
           <box>
             <size>0.02 0.02 0.02</size>
@@ -63,7 +63,7 @@
         </geometry>
       </visual>
       <visual name='base_footprint_fixed_joint_lump__back_rplidar_visual_4'>
-        <pose>-0.567033 0.44463 0.352447 0 -0 0</pose>
+        <pose>-0.57563 0.44463 0.352447 0 -0 3.14159</pose>
         <geometry>
           <cylinder>
             <length>0.04</length>
@@ -71,7 +71,15 @@
           </cylinder>
         </geometry>
       </visual>
-      <visual name='base_footprint_fixed_joint_lump__front_camera_color_frame_visual_5'>
+      <visual name='base_footprint_fixed_joint_lump__base_link_dummy_visual_5'>
+        <pose>-0.586092 0 0.44 0 -0 3.14159</pose>
+        <geometry>
+          <box>
+            <size>0.01 0.25 0.05</size>
+          </box>
+        </geometry>
+      </visual>
+      <visual name='base_footprint_fixed_joint_lump__front_camera_color_frame_visual_6'>
         <pose>0.97039 0 0.751318 0 -0 0</pose>
         <geometry>
           <box>
@@ -79,16 +87,16 @@
           </box>
         </geometry>
       </visual>
-      <visual name='base_footprint_fixed_joint_lump__front_camera_depth_frame_visual_6'>
-        <pose>0.97039 0 0.832583 0 -0 0</pose>
+      <visual name='base_footprint_fixed_joint_lump__front_camera_depth_frame_visual_7'>
+        <pose>0.97039 0 0.832583 3.14159 -0 0</pose>
         <geometry>
           <box>
             <size>0.02 0.02 0.02</size>
           </box>
         </geometry>
       </visual>
-      <visual name='base_footprint_fixed_joint_lump__front_rplidar_visual_7'>
-        <pose>0.952333 -0.425759 0.352447 0 -0 0</pose>
+      <visual name='base_footprint_fixed_joint_lump__front_rplidar_visual_8'>
+        <pose>0.962388 -0.439697 0.352447 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.04</length>
@@ -96,7 +104,7 @@
           </cylinder>
         </geometry>
       </visual>
-      <visual name='base_footprint_fixed_joint_lump__imu_link_visual_8'>
+      <visual name='base_footprint_fixed_joint_lump__imu_link_visual_10'>
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
@@ -104,7 +112,7 @@
           </box>
         </geometry>
       </visual>
-      <visual name='base_footprint_fixed_joint_lump__lidar_3d_visual_9'>
+      <visual name='base_footprint_fixed_joint_lump__lidar_3d_visual_11'>
         <pose>0.056954 0 1.3236 0 -0 0</pose>
         <geometry>
           <cylinder>
@@ -121,8 +129,8 @@
         <camera>
           <horizontal_fov>1.047</horizontal_fov>
           <image>
-            <width>640</width>
-            <height>480</height>
+            <width>1280</width>
+            <height>1024</height>
             <format>R8G8B8</format>
           </image>
           <clip>
@@ -178,8 +186,8 @@
             <horizontal>
               <samples>640</samples>
               <resolution>1</resolution>
-              <min_angle>-1.4708</min_angle>
-              <max_angle>1.4708</max_angle>
+              <min_angle>-1.5708</min_angle>
+              <max_angle>1.5708</max_angle>
             </horizontal>
           </scan>
           <range>
@@ -188,7 +196,7 @@
             <resolution>0.01</resolution>
           </range>
         </ray>
-        <pose>-0.567033 0.44463 0.352447 0 -0 3.14159</pose>
+        <pose>-0.57563 0.44463 0.352447 0 -0 3.14159</pose>
         <plugin name='back_scan_plugin' filename='libgazebo_ros_ray_sensor.so'>
           <ros>
             <remapping>~/out:=/back_scan</remapping>
@@ -262,8 +270,8 @@
             <horizontal>
               <samples>640</samples>
               <resolution>1</resolution>
-              <min_angle>-1.4708</min_angle>
-              <max_angle>1.4708</max_angle>
+              <min_angle>-1.5708</min_angle>
+              <max_angle>1.5708</max_angle>
             </horizontal>
           </scan>
           <range>
@@ -272,7 +280,7 @@
             <resolution>0.01</resolution>
           </range>
         </ray>
-        <pose>0.952333 -0.425759 0.352447 0 -0 0</pose>
+        <pose>0.962388 -0.439697 0.352447 0 -0 0</pose>
         <plugin name='front_scan_plugin' filename='libgazebo_ros_ray_sensor.so'>
           <ros>
             <remapping>~/out:=/front_scan</remapping>
@@ -332,8 +340,8 @@
       </sensor>
     </link>
     <joint name='front_wheel_joint' type='ball'>
-      <pose relative_to='base_board'>0.880736 0 -0.086626 0 -0 0</pose>
-      <parent>base_board</parent>
+      <pose relative_to='base_footprint'>0.807871 0 -0.092087 0 -0 0</pose>
+      <parent>base_footprint</parent>
       <child>front_wheel</child>
     </joint>
     <link name='front_wheel'>
@@ -368,14 +376,14 @@
       </visual>
     </link>
     <joint name='left_wheel_joint' type='revolute'>
-      <pose relative_to='base_board'>-0.041775 0.490829 -0.073368 -1.5708 1.5708 0</pose>
-      <parent>base_board</parent>
+      <pose relative_to='base_footprint'>-0.041775 0.490829 -0.073368 -1.5708 1.5708 0</pose>
+      <parent>base_footprint</parent>
       <child>left_wheel</child>
       <axis>
         <xyz>0 0 1</xyz>
         <limit>
           <effort>10</effort>
-          <velocity>6.2</velocity>
+          <velocity>1</velocity>
           <lower>-1e+16</lower>
           <upper>1e+16</upper>
         </limit>
@@ -440,14 +448,14 @@
       </visual>
     </link>
     <joint name='right_wheel_joint' type='revolute'>
-      <pose relative_to='base_board'>-0.043491 -0.487712 -0.073368 -1.5708 1.5708 0</pose>
-      <parent>base_board</parent>
+      <pose relative_to='base_footprint'>-0.043491 -0.487712 -0.073368 -1.5708 1.5708 0</pose>
+      <parent>base_footprint</parent>
       <child>right_wheel</child>
       <axis>
         <xyz>0 0 1</xyz>
         <limit>
           <effort>10</effort>
-          <velocity>6.2</velocity>
+          <velocity>1</velocity>
           <lower>-1e+16</lower>
           <upper>1e+16</upper>
         </limit>

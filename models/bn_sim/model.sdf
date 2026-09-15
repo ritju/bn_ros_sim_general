@@ -7,7 +7,7 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/walls.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </visual>
@@ -15,7 +15,7 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/walls.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </collision>
@@ -26,7 +26,7 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/marker.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
         <material>
@@ -41,7 +41,7 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/charge.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </visual>
@@ -50,7 +50,7 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/charge.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.2 0.2 0.2</scale>
           </mesh>
         </geometry>
       </collision>
