@@ -2,15 +2,15 @@
 <sdf version='1.7'>
   <model name='robot_gazebo_s1'>
     <link name='base_footprint'>
+      <pose>0.189606 0 0.563428 0 -0 0</pose>
       <inertial>
-        <pose>0.189606 5.6e-05 0.563428 0 -0 0</pose>
         <mass>108.3</mass>
         <inertia>
           <ixx>15.3947</ixx>
-          <ixy>0.0645352</ixy>
-          <ixz>0.217852</ixz>
+          <ixy>0</ixy>
+          <ixz>0.218</ixz>
           <iyy>27.6071</iyy>
-          <iyz>0.00378152</iyz>
+          <iyz>0</iyz>
           <izz>23.4222</izz>
         </inertia>
       </inertial>
@@ -340,14 +340,13 @@
       </sensor>
     </link>
     <joint name='front_wheel_joint' type='ball'>
-      <pose relative_to='base_footprint'>0.807871 0 -0.092087 0 -0 0</pose>
+      <pose relative_to='base_footprint'>0.807871 0 -0.082087 0 -0 0</pose>
       <parent>base_footprint</parent>
       <child>front_wheel</child>
     </joint>
     <link name='front_wheel'>
       <pose relative_to='front_wheel_joint'>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>0 0 0 0 -0 0</pose>
         <mass>2</mass>
         <inertia>
           <ixx>0.017761</ixx>
@@ -359,7 +358,6 @@
         </inertia>
       </inertial>
       <collision name='front_wheel_collision'>
-        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
             <radius>0.149</radius>
@@ -368,27 +366,25 @@
         <surface>
           <friction>
             <ode>
-              <!-- 球轮不需要区分方向，两个摩擦系数都设为极低值 -->
-              <mu>0.01</mu>
-              <mu2>0.01</mu2>
-              <!-- 球体无需设置 fdir1，因为各向同性 -->
+              <mu>0.1</mu>
+              <mu2>0.1</mu2>
               <slip1>0.0</slip1>
               <slip2>0.0</slip2>
             </ode>
           </friction>
           <contact>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <max_vel>0.5</max_vel>
-              <kp>1e6</kp>
+              <soft_cfm>0.001</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+5</kp>
               <kd>1.0</kd>
+              <max_vel>0.5</max_vel>
               <min_depth>0.001</min_depth>
             </ode>
           </contact>
         </surface>
       </collision>
       <visual name='front_wheel_visual'>
-        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
             <radius>0.149</radius>
@@ -417,7 +413,6 @@
     <link name='left_wheel'>
       <pose relative_to='left_wheel_joint'>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>0 0 0 0 -0 0</pose>
         <mass>2</mass>
         <inertia>
           <ixx>0.015734</ixx>
@@ -429,7 +424,6 @@
         </inertia>
       </inertial>
       <collision name='left_wheel_collision'>
-        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.129</length>
@@ -439,7 +433,7 @@
         <surface>
           <friction>
             <ode>
-              <mu>1.0</mu>
+              <mu>100000</mu>
               <mu2>100000</mu2>
               <fdir1>1 0 0</fdir1>
               <slip1>0.0</slip1>
@@ -459,7 +453,6 @@
         </surface>
       </collision>
       <visual name='left_wheel_visual'>
-        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.129</length>
@@ -469,7 +462,7 @@
       </visual>
     </link>
     <joint name='right_wheel_joint' type='revolute'>
-      <pose relative_to='base_footprint'>-0.043491 -0.487712 -0.073368 -1.5708 1.5708 0</pose>
+      <pose relative_to='base_footprint'>-0.041775 -0.490829 -0.073368 -1.5708 1.5708 0</pose>
       <parent>base_footprint</parent>
       <child>right_wheel</child>
       <axis>
@@ -489,7 +482,6 @@
     <link name='right_wheel'>
       <pose relative_to='right_wheel_joint'>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>0 0 0 0 -0 0</pose>
         <mass>2</mass>
         <inertia>
           <ixx>0.015734</ixx>
@@ -501,7 +493,6 @@
         </inertia>
       </inertial>
       <collision name='right_wheel_collision'>
-        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.129</length>
@@ -511,7 +502,7 @@
         <surface>
           <friction>
             <ode>
-              <mu>1.0</mu>
+              <mu>100000</mu>
               <mu2>100000</mu2>
               <fdir1>1 0 0</fdir1>
               <slip1>0.0</slip1>
@@ -531,7 +522,6 @@
         </surface>
       </collision>
       <visual name='right_wheel_visual'>
-        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.129</length>

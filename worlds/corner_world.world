@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <sdf version='1.7'>
   <world name='default'>
     <plugin name='gazebo_ros_state' filename='libgazebo_ros_state.so'/>
@@ -85,7 +86,7 @@
       <ode>
         <solver>
           <type>quick</type>
-          <iters>15</iters>
+          <iters>150</iters>
           <precon_iters>0</precon_iters>
           <sor>1.4</sor>
           <use_dynamic_moi_rescaling>1</use_dynamic_moi_rescaling>
@@ -6055,17 +6056,7 @@
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
-    <audio>
-      <device>default</device>
-    </audio>
-    <wind/>
-    <spherical_coordinates>
-      <surface_model>EARTH_WGS84</surface_model>
-      <latitude_deg>0</latitude_deg>
-      <longitude_deg>0</longitude_deg>
-      <elevation>0</elevation>
-      <heading_deg>0</heading_deg>
-    </spherical_coordinates>
+
     <model name='turtlebot3_house_0'>
       <link name='Wall_101'>
         <pose>-0.05 3.1 0 0 0 -1.5708</pose>
@@ -12080,157 +12071,23 @@
       <pose>-0.148859 -21.6674 0.356896 0 0 1.5708</pose>
       <enable_wind>0</enable_wind>
     </model>
-    <model name='bn_sim'>
-      <frame name='bn_sim_default::__model__' attached_to='bn_sim_default::walls'>
-        <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
-      </frame>
-      <static>1</static>
-      <link name='bn_sim_default::walls'>
-        <visual name='walls_v'>
-          <geometry>
-            <mesh>
-              <uri>model://bn_sim/meshes/walls.stl</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <collision name='walls_c'>
-          <geometry>
-            <mesh>
-              <uri>model://bn_sim/meshes/walls.stl</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <pose relative_to='bn_sim_default::__model__'>0 0 0 0 -0 0</pose>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <link name='bn_sim_default::charger'>
-        <visual name='marker_v'>
-          <pose>0 0 0.12 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://bn_sim/meshes/marker.stl</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <ambient>0 0 0 1</ambient>
-            <diffuse>0 0 0 1</diffuse>
-            <specular>0 0 0 1</specular>
-            <emissive>0 0 0 1</emissive>
-          </material>
-        </visual>
-        <visual name='charger_v'>
-          <pose>0 0 0.12 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://bn_sim/meshes/charge.stl</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <collision name='charger_c'>
-          <pose>0 0 0.12 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://bn_sim/meshes/charge.stl</uri>
-              <scale>0.1 0.1 0.1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <pose relative_to='bn_sim_default::__model__'>0 0 0 0 -0 0</pose>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose>-15 0 0 0 -0 1.57</pose>
-    </model>
+
+    <include>
+      <uri>model://bn_sim</uri>
+      <pose>-25 0 0 0 -0 1.57</pose>
+    </include>
+
     <state world_name='default'>
       <sim_time>6046 19000000</sim_time>
       <real_time>243 287262518</real_time>
       <wall_time>1789366902 773833386</wall_time>
       <iterations>24087</iterations>
-      <model name='bn_sim'>
-        <pose>-15 0 0 0 -0 1.57</pose>
-        <scale>1 1 1</scale>
-        <link name='bn_sim_default::charger'>
-          <pose>-15 0 0 0 -0 1.57</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='bn_sim_default::walls'>
-          <pose>-15 0 0 0 -0 1.57</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='ground_plane'>
-        <pose>0 0 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>0 0 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='long_box_1'>
         <pose>-0.148859 -21.6674 0.356896 0 0 1.5708</pose>
         <scale>1 1 1</scale>
         <link name='link'>
           <pose>-0.148859 -21.6674 0.356896 0 0 1.5708</pose>
           <velocity>0 0 0 0 0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='ros_symbol'>
-        <pose>7.32088 -15.2763 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='symbol'>
-          <pose>7.32088 -15.2763 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='ros_symbol_clone'>
-        <pose>-10.3089 -34.3056 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='symbol'>
-          <pose>-10.3089 -34.3056 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
@@ -12755,9 +12612,6 @@
           </link>
         </model>
       </model>
-      <light name='sun'>
-        <pose>0 0 10 0 -0 0</pose>
-      </light>
     </state>
   </world>
 </sdf>
