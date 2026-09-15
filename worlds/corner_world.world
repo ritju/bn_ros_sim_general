@@ -12074,7 +12074,7 @@
 
     <include>
       <uri>model://bn_sim</uri>
-      <pose>-25 0 0 0 -0 1.57</pose>
+      <pose>-20 0 0 0 -0 1.57</pose>
     </include>
 
     <state world_name='default'>
