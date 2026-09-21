@@ -7,7 +7,7 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/walls.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.1 0.1 0.1</scale>
           </mesh>
         </geometry>
       </visual>
@@ -15,18 +15,18 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/walls.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.1 0.1 0.1</scale>
           </mesh>
         </geometry>
       </collision>
     </link>
     <link name="charger">
       <visual name="marker_v">
-        <pose>0 0 0.08 0 0 0</pose> 
+        <pose>0 0 0.04 0 0 0</pose> 
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/marker.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.15 0.15 0.15</scale>
           </mesh>
         </geometry>
         <material>
@@ -37,31 +37,31 @@
         </material>
       </visual>
       <visual name="charger_v">
-        <pose>0 0 0.08 0 0 0</pose> 
+        <pose>0 0 0.04 0 0 0</pose> 
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/charge.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.15 0.15 0.15</scale>
           </mesh>
         </geometry>
       </visual>
       <collision name="charger_c">
-        <pose>0 0 0.08 0 0 0</pose> 
+        <pose>0 0 0.04 0 0 0</pose> 
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/charge.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.15 0.15 0.15</scale>
           </mesh>
         </geometry>
       </collision>
     </link>
     <link name="charger_2">
-      <pose>7.9 -1.2 0.08 0 0 -1.5708</pose> 
+      <pose>7.2 -1.3 0.04 0 0 -1.5708</pose> 
       <visual name="marker_v">
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/marker.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.15 0.15 0.15</scale>
           </mesh>
         </geometry>
         <material>
@@ -75,7 +75,7 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/charge.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.15 0.15 0.15</scale>
           </mesh>
         </geometry>
       </visual>
@@ -83,7 +83,7 @@
         <geometry>
           <mesh>
             <uri>model://bn_sim/meshes/charge.stl</uri>
-            <scale>0.12 0.12 0.12</scale>
+            <scale>0.15 0.15 0.15</scale>
           </mesh>
         </geometry>
       </collision>

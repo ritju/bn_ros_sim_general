@@ -306,7 +306,7 @@
       <sensor name='lidar_3d' type='ray'>
         <always_on>1</always_on>
         <update_rate>10</update_rate>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
         <topic>/vanjee/lidar</topic>
         <ray>
           <scan>
@@ -319,8 +319,8 @@
             <vertical>
               <samples>8</samples>
               <resolution>1</resolution>
-              <min_angle>-0.1218</min_angle>
-              <max_angle>0.1218</max_angle>
+              <min_angle>-0.1518</min_angle>
+              <max_angle>0.1518</max_angle>
             </vertical>
           </scan>
           <range>
