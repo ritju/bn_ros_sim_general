@@ -2,7 +2,9 @@
 <sdf version='1.7'>
   <model name='robot_gazebo_s1'>
     <link name='base_footprint'>
-      <pose>0.189606 0 0.234368 0 -0 0</pose>
+      <!-- 模型原点 == base_footprint（原来是 0.189606 0 0.234368，导致 odom 报的是
+           模型原点位姿，真身整体偏移 0.19 m 且随车头旋转） -->
+      <pose>0 0 0 0 -0 0</pose>
       <inertial>
         <mass>108.3</mass>
         <inertia>
@@ -123,7 +125,7 @@
       </visual>
       <sensor name='rgb_camera_back' type='camera'>
         <always_on>1</always_on>
-        <update_rate>10</update_rate>
+        <update_rate>1</update_rate>
         <visualize>0</visualize>
         <topic>/rgb_camera_back/image_raw</topic>
         <camera>
@@ -207,7 +209,7 @@
       </sensor>
       <sensor name='rgb_camera_front' type='camera'>
         <always_on>1</always_on>
-        <update_rate>10</update_rate>
+        <update_rate>1</update_rate>
         <visualize>0</visualize>
         <topic>/rgb_camera_front/image_raw</topic>
         <camera>
@@ -306,7 +308,7 @@
       <sensor name='lidar_3d' type='ray'>
         <always_on>1</always_on>
         <update_rate>10</update_rate>
-        <visualize>1</visualize>
+        <visualize>0</visualize>
         <topic>/vanjee/lidar</topic>
         <ray>
           <scan>
@@ -319,8 +321,8 @@
             <vertical>
               <samples>8</samples>
               <resolution>1</resolution>
-              <min_angle>-0.1518</min_angle>
-              <max_angle>0.1518</max_angle>
+              <min_angle>-0.1218</min_angle>
+              <max_angle>0.1218</max_angle>
             </vertical>
           </scan>
           <range>
@@ -340,7 +342,7 @@
       </sensor>
     </link>
     <joint name='front_wheel_joint' type='ball'>
-      <pose relative_to='base_footprint'>0.807871 0 -0.085368 0 -0 0</pose>
+      <pose relative_to='base_footprint'>0.807871 0 -0.087368 0 -0 0</pose>
       <parent>base_footprint</parent>
       <child>front_wheel</child>
     </joint>
