@@ -50,18 +50,16 @@ def generate_launch_description():
     use_rviz = LaunchConfiguration('use_rviz')
     headless = LaunchConfiguration('headless')
     world = LaunchConfiguration('world')
-    # 注意：下面的坐标是 Gazebo 模型原点（s1.model 的 model 坐标系）的出生位姿，
-    # 而 Nav2 的机器人坐标系是 base_footprint —— 它在模型坐标系中位于 x=+0.189606。
-    # 因此手动发 /initialpose（rviz 的 2D Pose Estimate 工具）时要发 base_footprint
-    # 在 map 下的位姿，即 (-5.60 + 0.189606, -8.50, 0) = (-5.4104, -8.50, 0)。
-    # 该变换由外部 capella_ros_launcher 的 fake_sensor_publisher 消费以反解出 map->odom；
-    # 漏发或不点会让 map 与 odom 重合，全局代价地图从错误栅格出发。
+    # 注意：s1.model 的模型原点已与 base_footprint 对齐（link pose 0,0,0），
+    # 因此这里的 x/y/z 就是 base_footprint 的出生位姿。
+    # z_pose: 轮子接地面在 base_footprint 系 = -0.234368，故 z=0.244368 时轮子
+    # 离地 1 cm，出生轻落。发 /initialpose 时直接给这个位姿即可（无额外偏移）。
     pose = {'x': LaunchConfiguration('x_pose', default='-5.60'),
             'y': LaunchConfiguration('y_pose', default='-8.50'),
-            'z': LaunchConfiguration('z_pose', default='0.01'),
+            'z': LaunchConfiguration('z_pose', default='0.244368'),
             'R': LaunchConfiguration('roll', default='0.00'),
             'P': LaunchConfiguration('pitch', default='0.00'),
-            'Y': LaunchConfiguration('yaw', default='0.00')}
+            'Y': LaunchConfiguration('yaw', default='-1.5708')}
     robot_name = LaunchConfiguration('robot_name')
     robot_sdf = LaunchConfiguration('robot_sdf')
 
@@ -93,7 +91,7 @@ def generate_launch_description():
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
         default_value=os.path.join(
-            model_dir, 'worlds', 'corner_world.yaml'),
+            model_dir, 'worlds', 'bn_sim.yaml'),
         description='Full path to map file to load')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -136,7 +134,7 @@ def generate_launch_description():
 
     declare_use_rviz_cmd = DeclareLaunchArgument(
         'use_rviz',
-        default_value='True',
+        default_value='False',
         description='Whether to start RVIZ')
 
     declare_simulator_cmd = DeclareLaunchArgument(
@@ -150,7 +148,7 @@ def generate_launch_description():
         #              https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/91
         # default_value=os.path.join(get_package_share_directory('turtlebot3_gazebo'),
         # worlds/turtlebot3_worlds/waffle.model')
-        default_value=os.path.join(model_dir, 'worlds', 'corner_world.world'),
+        default_value=os.path.join(model_dir, 'worlds', 'bn_sim.world'),
         description='Full path to world model file to load')
 
     declare_robot_name_cmd = DeclareLaunchArgument(
@@ -210,12 +208,25 @@ def generate_launch_description():
             '-x', pose['x'], '-y', pose['y'], '-z', pose['z'],
             '-R', pose['R'], '-P', pose['P'], '-Y', pose['Y']])
 
+    # 3D 雷达(/vanjee/lidar, PointCloud2) → 360° LaserScan，供 SLAM 建图使用。
+    # 参数见 nav2_params.yaml 的 pointcloud_to_laserscan 节。
+    start_pointcloud_to_laserscan_cmd = Node(
+        condition=IfCondition(slam),
+        package='pointcloud_to_laserscan',
+        executable='pointcloud_to_laserscan_node',
+        name='pointcloud_to_laserscan',
+        output='screen',
+        parameters=[params_file],
+        remappings=[('cloud_in', '/vanjee/lidar'),
+                    ('scan', '/scan_lidar3d')])
+
     rviz_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(launch_dir, 'rviz_launch.py')),
         condition=IfCondition(use_rviz),
         launch_arguments={'namespace': namespace,
                           'use_namespace': use_namespace,
+                          'use_sim_time': use_sim_time,
                           'rviz_config': rviz_config_file}.items())
 
     bringup_cmd = IncludeLaunchDescription(
@@ -261,6 +272,7 @@ def generate_launch_description():
 
     # Add the actions to launch all of the navigation nodes
     ld.add_action(start_robot_state_publisher_cmd)
+    ld.add_action(start_pointcloud_to_laserscan_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
 

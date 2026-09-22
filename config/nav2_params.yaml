@@ -1,11 +1,11 @@
 amcl:
   ros__parameters:
     use_sim_time: True
-    alpha1: 0.2
-    alpha2: 0.2
-    alpha3: 0.2
-    alpha4: 0.2
-    alpha5: 0.2
+    alpha1: 0.01
+    alpha2: 0.01
+    alpha3: 0.01
+    alpha4: 0.01
+    alpha5: 0.01
     base_frame_id: "base_footprint"
     beam_skip_distance: 0.5
     beam_skip_error_threshold: 0.9
@@ -13,35 +13,31 @@ amcl:
     do_beamskip: false
     global_frame_id: "map"
     lambda_short: 0.1
-    laser_likelihood_max_dist: 2.0
-    laser_max_range: 100.0
+    laser_likelihood_max_dist: 1.0
+    laser_max_range: 40.0
     laser_min_range: -1.0
     laser_model_type: "likelihood_field"
-    max_beams: 60
-    max_particles: 2000
-    min_particles: 500
+    max_beams: 100
+    max_particles: 800
+    min_particles: 200
     odom_frame_id: "odom"
     pf_err: 0.05
     pf_z: 0.99
     recovery_alpha_fast: 0.0
     recovery_alpha_slow: 0.0
-    resample_interval: 1
+    resample_interval: 3
     robot_model_type: "nav2_amcl::DifferentialMotionModel"
     save_pose_rate: 0.5
-    sigma_hit: 0.2
-    # 保持 false：本工程的 map->odom 由外部 capella_ros_launcher 的
-    # fake_sensor_publisher 发布（虚拟定位：把 /cmd_vel 积分成 odom，并由 /initialpose
-    # 反解出固定的 map->odom）。amcl 若置 true 会与它争抢同一个变换。
-    # 因此本工程不使用 amcl 的定位结果，下面的 laser_*/alpha*/max_beams 等参数对结果无影响。
-    tf_broadcast: false
+    sigma_hit: 0.12
+    tf_broadcast: true
     transform_tolerance: 1.0
-    update_min_a: 0.2
+    update_min_a: 0.3
     update_min_d: 0.25
-    z_hit: 0.5
+    z_hit: 0.7
     z_max: 0.05
-    z_rand: 0.5
+    z_rand: 0.1
     z_short: 0.05
-    scan_topic: front_scan
+    scan_topic: /front_scan
 
 slam_toolbox:
   ros__parameters:
@@ -62,45 +58,51 @@ slam_toolbox:
     odom_frame: odom
     map_frame: map
     base_frame: base_link
-    scan_topic: /front_scan
+    scan_topic: /scan_lidar3d
     use_map_saver: true
     mode: mapping #localization
 
     # if you'd like to immediately start continuing a map at a given pose
     # or at the dock, but they are mutually exclusive, if pose is given
     # will use pose
-    map_file_name: charge_test
+    map_file_name: bn_sim_new
     #map_start_pose: [0.0, 0.0, 0.0]
-    map_start_at_dock: true
+    #map_start_at_dock: false
 
     debug_logging: false
     throttle_scans: 1
     transform_publish_period: 0.02 #if 0 never publishes odometry
-    map_update_interval: 5.0
+    map_update_interval: 1.0
     resolution: 0.05
-    min_laser_range: 0.1 #for rastering images
+    min_laser_range: 0.75 # 与 /scan_lidar3d 的 range_min 一致，去掉车身回波
     max_laser_range: 10.0 #for rastering images
-    minimum_time_interval: 0.5
+    # 0.5 → 0.25：扫描处理更及时（10 Hz 扫描下约每 2~3 帧处理一次）
+    minimum_time_interval: 0.25
     transform_timeout: 0.2
     tf_buffer_duration: 30.
     stack_size_to_use: 40000000 #// program needs a larger stack size to serialize large maps
     enable_interactive_mode: true
 
     # General Parameters
-    use_scan_matching: true
+    # odom 为地面真值（gazebo WORLD 源），扫描匹配反而引入累积偏置
+    # （长跑后 yaw 偏 ~5°、位置偏 ~0.5 m，量级与匹配门限 0.3~0.55 无关）。
+    # 建图时关闭匹配，地图直接按真值 odom 拓印 → 漂移归零。
+    use_scan_matching: false
     use_scan_barycenter: true
-    minimum_travel_distance: 0.5
-    minimum_travel_heading: 0.5
+    # 转向跳变的根因：0.5 rad(28.6°) 才触发一次更新，转向时扫描攒批爆发。
+    # 调小后每 ~5.7° 处理一帧，转向平滑跟随。
+    minimum_travel_distance: 0.2
+    minimum_travel_heading: 0.1
     scan_buffer_size: 10
     scan_buffer_maximum_scan_distance: 10.0
-    link_match_minimum_response_fine: 0.1
+    link_match_minimum_response_fine: 0.3
     link_scan_maximum_distance: 1.5
     loop_search_maximum_distance: 3.0
     do_loop_closing: true
     loop_match_minimum_chain_size: 10
     loop_match_maximum_variance_coarse: 3.0
     loop_match_minimum_response_coarse: 0.35
-    loop_match_minimum_response_fine: 0.45
+    loop_match_minimum_response_fine: 0.55
 
     # Correlation Parameters - Correlation Parameters
     correlation_search_space_dimension: 0.5
@@ -202,7 +204,9 @@ controller_server:
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.001
     min_theta_velocity_threshold: 0.001
-    failure_tolerance: 0.3
+    # 0.3 s 太短：末段贴障碍时 DWB 连续几拍没有有效轨迹就会触发
+    # recovery（Spin，max 1.0 rad/s），表现为目标附近反复旋转停不下来。
+    failure_tolerance: 2.0
     progress_checker_plugin: "progress_checker"
     goal_checker_plugins: ["general_goal_checker"] # "precise_goal_checker"
     controller_plugins: ["FollowPath"]
@@ -224,38 +228,41 @@ controller_server:
       plugin: "nav2_controller::SimpleGoalChecker"
       # 车体 1.379 x 0.836 m，0.25 过紧会在末段反复对齐
       xy_goal_tolerance: 0.35
-      yaw_goal_tolerance: 0.35
+      yaw_goal_tolerance: 0.5
     # DWB parameters
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner"
       debug_trajectory_details: True
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 0.26
+      max_vel_x: 0.6
       max_vel_y: 0.0
       max_vel_theta: 1.0
       min_speed_xy: 0.0
-      max_speed_xy: 0.26
+      max_speed_xy: 0.6
       min_speed_theta: 0.0
       # Add high threshold velocity for turtlebot 3 issue.
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
-      acc_lim_x: 2.5
+      acc_lim_x: 2.0
       acc_lim_y: 0.0
       acc_lim_theta: 3.2
-      decel_lim_x: -2.5
+      decel_lim_x: -2.0
       decel_lim_y: 0.0
       decel_lim_theta: -3.2
       vx_samples: 20
       vy_samples: 1
-      vtheta_samples: 20
-      sim_time: 1.7
+      # 20 → 40：旋转采样粒度 0.1 → 0.05 rad/s，末段对准少过冲
+      vtheta_samples: 40
+      sim_time: 2.0
       linear_granularity: 0.05
       angular_granularity: 0.025
       transform_tolerance: 0.2
       xy_goal_tolerance: 0.35
       # 原值 0.25 与 max_vel_x 0.26 几乎相等，导致几乎所有轨迹被判“已停止”，
-      # RotateToGoal 的 nonrotation 检查命中全部轨迹（日志中占比 0.95）
-      trans_stopped_velocity: 0.10
+      # RotateToGoal 的 nonrotation 检查命中全部轨迹（日志中占比 0.95）；
+      # 0.10 → 0.05：更迟进入“纯旋转窗口”，机器人在窗口内更久地保持
+      # “边减速边转向”的混合模式，减少贴障碍的原地纯旋转。
+      trans_stopped_velocity: 0.05
       short_circuit_trajectory_evaluation: True
       stateful: True
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
@@ -273,7 +280,7 @@ controller_server:
 local_costmap:
   local_costmap:
     ros__parameters:
-      update_frequency: 5.0
+      update_frequency: 20.0
       publish_frequency: 2.0
       global_frame: odom
       robot_base_frame: base_link
@@ -294,7 +301,7 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 0.42
+        inflation_radius: 0.45
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -372,7 +379,7 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 0.42
+        inflation_radius: 0.45
       always_send_full_costmap: True
 
 map_server:
@@ -389,6 +396,27 @@ map_saver:
     free_thresh_default: 0.25
     occupied_thresh_default: 0.65
     map_subscribe_transient_local: True
+    # 显式指定，否则 image_format 为空 → Magick "No encode delegate (FILE)" 
+    image_format: pgm
+    map_mode: trinary
+
+pointcloud_to_laserscan:
+  ros__parameters:
+    # 3D 雷达(/vanjee/lidar, frame lidar_3d, 装高 1.3236 m, 竖向 ±8.7°) → 360° 2D 扫描 /scan_lidar3d
+    use_sim_time: True
+    target_frame: lidar_3d
+    transform_tolerance: 0.01
+    # 排除地面：lidar_3d 系里地平面恒在 z = -1.3236（水平面与距离无关），
+    # min_height 取 -1.25 可滤掉地面、保留 ≥ ~7cm 的障碍
+    min_height: -1.25
+    max_height: 0.9        # 世界系约 2.2 m 以下
+    angle_min: -3.14159
+    angle_max: 3.14159
+    angle_increment: 0.0087   # π/360 → 720 采样
+    scan_time: 0.1
+    range_min: 1.0        # > 车身回波(0.61 m)，去掉车体自遮挡的假墙
+    range_max: 10.0
+    use_inf: True
 
 planner_server:
   ros__parameters:
@@ -457,8 +485,8 @@ velocity_smoother:
     smoothing_frequency: 10.0
     scale_velocities: False
     feedback: "OPEN_LOOP"
-    max_velocity: [0.26, 0.0, 1.0]
-    min_velocity: [-0.26, 0.0, -1.0]
+    max_velocity: [0.6, 0.0, 1.0]
+    min_velocity: [-0.6, 0.0, -1.0]
     max_accel: [2.5, 0.0, 3.2]
     max_decel: [-2.5, 0.0, -3.2]
     odom_topic: "odom"
